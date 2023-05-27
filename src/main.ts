@@ -1,8 +1,43 @@
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { NestExpressApplication, ExpressAdapter } from '@nestjs/platform-express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { useContainer } from 'class-validator';
+
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+  const app = await NestFactory.create<NestExpressApplication>(
+    AppModule,
+    new ExpressAdapter()
+  );
+
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true,
+  }));
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
+
+  const logger = new Logger('Bootstrap');
+
+  const config = new DocumentBuilder()
+    .setTitle('Membership Gym')
+    .setDescription('The Membership Gym API description')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
+  const port = process.env.PORT || 3000;
+
+  await app.enableCors();
+
+  await app.listen(port);
+
+  logger.log(`Application listening on port ${port}`);
 }
 bootstrap();
