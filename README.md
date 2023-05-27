@@ -26,7 +26,7 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## API Documentation 
+## API Membership Management Documentation 
 
 localhost:3000/api
 
