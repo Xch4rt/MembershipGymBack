@@ -12,6 +12,8 @@ async function bootstrap() {
     new ExpressAdapter()
   );
 
+  app.setGlobalPrefix('api');
+
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     forbidNonWhitelisted: true,
