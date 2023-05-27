@@ -4,6 +4,7 @@ import { UpdateMemberDto } from './dto/update-member.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { EmailValidator } from '../utils/emailValidator';
 import { PaginationDto } from './dto/pagination.dto';
+import { Member } from './entities/member.entity';
 @Injectable()
 export class MembersService {
   constructor(
@@ -38,7 +39,7 @@ export class MembersService {
   }
 
   async findAll(paginationDto: PaginationDto) {
-    const {page, limit} = paginationDto;
+    const { page, limit } = paginationDto;
     const skip: number = (page - 1) * limit;
 
     const total = await this.prisma.member.count();
@@ -88,11 +89,63 @@ export class MembersService {
     return member;
   }
 
-  update(id: number, updateMemberDto: UpdateMemberDto) {
+  async update(id: number, updateMemberDto: UpdateMemberDto) {
 
+    if (!this.emailValidator.isValid(updateMemberDto.email)) {
+      throw new HttpException('Invalid email', HttpStatus.BAD_REQUEST);
+    }
+
+    if (updateMemberDto.phone.length !== 8) {
+      throw new HttpException('Invalid phone', HttpStatus.BAD_REQUEST);
+    }
+
+    if (updateMemberDto.name == null || updateMemberDto.lastName == null || updateMemberDto.address == null || updateMemberDto.phone == null) {
+      throw new HttpException('Invalid data', HttpStatus.BAD_REQUEST);
+    }
+
+    const member = await this.prisma.member.findUnique({
+      where: {
+        id: id
+      }
+    });
+    if (!member) {
+      throw new HttpException('Member not found', HttpStatus.NOT_FOUND);
+    }
+
+    await this.prisma.member.update({
+      where: {
+        id: id
+      },
+      data: updateMemberDto
+    });
+
+    return member;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} member`;
+  async remove(id: number) {
+    const member = await this.prisma.member.findUnique({
+      where: {
+        id: id
+      }
+    });
+    if (!member) {
+      throw new HttpException('Member not found', HttpStatus.NOT_FOUND);
+    }
+
+    await this.prisma.member.update({
+      where: {
+        id: id
+      },
+      data: {
+        isActive: false,
+        updatedAt: new Date()
+      }
+    });
+
+    if (!member) {
+      throw new HttpException('Member not found', HttpStatus.NOT_FOUND);
+    }
+
+    return member;
   }
 }
