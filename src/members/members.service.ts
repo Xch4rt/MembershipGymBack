@@ -39,7 +39,7 @@ export class MembersService {
   }
 
   async findAll(paginationDto: PaginationDto) {
-    const { page, limit } = paginationDto;
+    const { page=1, limit=10 } = paginationDto;
     const skip: number = (page - 1) * limit;
 
     const total = await this.prisma.member.count();
