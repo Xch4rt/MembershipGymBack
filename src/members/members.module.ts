@@ -7,6 +7,9 @@ import { EmailValidator } from '../utils/emailValidator';
 @Module({
   controllers: [MembersController],
   providers: [MembersService, EmailValidator],
-  imports: [PrismaModule],
+  imports: [
+    PrismaModule,
+    
+    ],
 })
 export class MembersModule {}
