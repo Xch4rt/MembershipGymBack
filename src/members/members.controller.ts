@@ -12,6 +12,7 @@ import { PaginationDto } from './dto/pagination.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('members')
+@ApiBearerAuth()
 @Controller('members')
 export class MembersController {
   constructor(private readonly membersService: MembersService) {}
