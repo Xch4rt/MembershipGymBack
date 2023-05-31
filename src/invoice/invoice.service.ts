@@ -28,8 +28,6 @@ export class InvoiceService {
     if (!member) {
       throw new HttpException('Member not found', 404);
     }
-
-
     const invoice = await this.prismaService.invoice.create({
       data: {
         paymentMethod: createInvoiceDto.paymentMethod,
@@ -57,6 +55,11 @@ export class InvoiceService {
             return {
               quantity: invoiceDetail.quantity,
               price: invoiceDetail.price,
+              membership: {
+                connect: {
+                  id: invoiceDetail.planId,
+                },
+              },
             }
           }),
         },
