@@ -1,9 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDecimal, IsNumber } from "class-validator";
+import { IsDecimal, IsNotEmpty, IsNumber } from "class-validator";
 
 export class InvoiceDetailDto {
 
     @IsDecimal()
+    @IsNotEmpty()
     @ApiProperty({
         description: 'Invoice price',
         type: Number,
@@ -11,6 +12,7 @@ export class InvoiceDetailDto {
     price: number;
 
     @IsNumber()
+    @IsNotEmpty()
     @ApiProperty({
         description: 'Quantity',
         type: Number,
@@ -18,6 +20,7 @@ export class InvoiceDetailDto {
     quantity: number;
 
     @IsNumber()
+    @IsNotEmpty()
     @ApiProperty({
         description: 'Plan Id',
         type: Number,
