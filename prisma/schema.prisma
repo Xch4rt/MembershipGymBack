@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL_DEV")
 }
 
 
@@ -44,12 +44,26 @@ model Invoice {
   id Int @default(autoincrement()) @id
   userId Int
   memberId Int
-  invoiceNumber String
+  invoiceTitle String
   paymentMethod String
   paymentDate DateTime
-  amount Float
+  description String
   User User @relation(fields: [userId], references: [id])
   Member Member @relation(fields: [memberId], references: [id])
+  InvoiceDetails InvoiceDetail[]
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model InvoiceDetail {
+  id Int @default(autoincrement()) @id
+  invoiceId Int
+  invoice Invoice @relation(fields: [invoiceId], references: [id])
+  membershipId Int
+  membership Membership @relation(fields: [membershipId], references: [id])
+  price Float
+  quantity Int
   isActive Boolean @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -74,6 +88,7 @@ model Membership {
   memberId Int
   member Member @relation(fields: [memberId], references: [id])
   price Float
+  InvoiceDetails InvoiceDetail[]
   isActive Boolean @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

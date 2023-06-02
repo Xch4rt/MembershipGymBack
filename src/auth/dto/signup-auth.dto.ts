@@ -3,7 +3,7 @@ import { LoginAuthDto } from './login-auth.dto';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class SignUpDto extends PartialType(LoginAuthDto) {
+export class SignUpDto extends LoginAuthDto {
 
     @ApiProperty({
         description: 'The name of the user',

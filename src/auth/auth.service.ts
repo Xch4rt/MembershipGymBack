@@ -40,10 +40,6 @@ export class AuthService {
   }
 
   async signup(signupDto: SignUpDto) {
-    if (signupDto.password.length < 8) {
-      throw new HttpException('Password must be at least 8 characters', 400);
-    }
-    
     const hashPassword = await Argon2.hash(signupDto.password);
 
     const user = await this.prismaService.user.findFirst({
