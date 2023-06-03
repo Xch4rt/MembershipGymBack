@@ -6,8 +6,24 @@ import { PrismaService } from '../prisma/prisma.service';
 @Injectable()
 export class MembershipService {
   constructor (private readonly prismaService: PrismaService) {}
-  create(createMembershipDto: CreateMembershipDto) {
-    return 'This action adds a new membership';
+  async create(createMembershipDto: CreateMembershipDto) {
+
+    if (createMembershipDto.price < 0 || createMembershipDto.pricePlan < 0) {
+      throw new Error('Price must be positive');
+    }
+
+    if (createMembershipDto.name === '' || createMembershipDto.name === null) {
+      throw new Error('Name must not be empty');
+    }
+
+    if (createMembershipDto.memberId < 0) {
+      throw new Error('Member id must be positive');
+    }
+
+    if (createMembershipDto.features === null) {
+      throw new Error('Features must not be empty');
+    }
+
   }
 
   findAll() {
