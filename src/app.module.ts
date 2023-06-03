@@ -7,7 +7,7 @@ import { MembershipModule } from './membership/membership.module';
 import { InvoiceModule } from './invoice/invoice.module';
 
 @Module({
-  imports: [MembersModule, AuthModule, InvoiceModule, MembershipModule],
+  imports: [MembersModule, AuthModule, InvoiceModule, PlansModule, MembershipModule],
   controllers: [AppController],
   providers: [AppService, ValidationPipe],
 })
