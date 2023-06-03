@@ -86,9 +86,11 @@ model Membership {
   startDate DateTime
   endDate DateTime
   memberId Int
+  planId Int
   member Member @relation(fields: [memberId], references: [id])
   price Float
   InvoiceDetails InvoiceDetail[]
+  Plan Plan @relation(fields: [planId], references: [id])
   isActive Boolean @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -100,6 +102,7 @@ model Plan {
   description String?
   features Json
   price Float
+  Memberships Membership[]
   isActive Boolean @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
