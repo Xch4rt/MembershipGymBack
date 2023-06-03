@@ -1,6 +1,16 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsJSON, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsJSON, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString } from "class-validator";
 
+class PlanFeatures {
+    @ApiProperty({ type: String })
+    f1: string;
+  
+    @ApiProperty({ type: String })
+    f2: string;
+  
+    @ApiProperty({ type: String })
+    f3: string;
+}
 export class CreatePlanDto {
 
     @ApiProperty({
@@ -29,11 +39,12 @@ export class CreatePlanDto {
     
     @ApiProperty({
         description: 'Plan features',
-        type: Object,
+        type: PlanFeatures,
     })
-    @IsJSON()
+    @IsObject()
     @IsNotEmpty()
-    features: object;
+    features: PlanFeatures;
 
 
 }
+

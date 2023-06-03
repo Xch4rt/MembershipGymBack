@@ -26,9 +26,11 @@ export class PlansService {
         name: createPlanDto.name,
         description: createPlanDto.description,
         price: createPlanDto.price,
-        features: createPlanDto.features,
+        features: JSON.stringify(createPlanDto.features),
       },
     });
+
+    return plan;
 
     }
 
