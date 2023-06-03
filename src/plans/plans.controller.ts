@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PlansService } from './plans.service';
 import { CreatePlanDto } from './dto/create-plan.dto';
 import { UpdatePlanDto } from './dto/update-plan.dto';
+import { PaginationDto } from './dto/pagination.dto';
 
 @Controller('plans')
 export class PlansController {
@@ -13,8 +14,8 @@ export class PlansController {
   }
 
   @Get()
-  findAll() {
-    return this.plansService.findAll();
+  findAll(@Body() paginationDto: PaginationDto) {
+    return this.plansService.findAll(paginationDto);
   }
 
   @Get(':id')

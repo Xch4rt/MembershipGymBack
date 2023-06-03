@@ -47,8 +47,13 @@ export class PlansService {
       take: limit
     });
 
+    
+
     return {
-      data,
+      data: data.map((item) => ({
+        ...item,
+        features: JSON.parse(item.features as string),
+      })),
       meta: {
         total,
         page,
