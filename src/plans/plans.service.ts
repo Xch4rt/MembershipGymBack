@@ -3,6 +3,7 @@ import { CreatePlanDto } from './dto/create-plan.dto';
 import { UpdatePlanDto } from './dto/update-plan.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { create } from 'domain';
+import { PaginationDto } from './dto/pagination.dto';
 
 @Injectable()
 export class PlansService {
@@ -35,8 +36,25 @@ export class PlansService {
     }
 
 
-  findAll() {
-    return `This action returns all plans`;
+  async findAll(paginationDto: PaginationDto) {
+    const { page=1, limit=10 } = paginationDto;
+    const skip: number = (page - 1) * limit;
+
+    const total = await this.prismaService.plan.count();
+
+    const data = await this.prismaService.plan.findMany({
+      skip,
+      take: limit
+    });
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        last_page: Math.ceil(total / limit)
+      }
+    };    
   }
 
   findOne(id: number) {
