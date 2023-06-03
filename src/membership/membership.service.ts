@@ -8,22 +8,53 @@ export class MembershipService {
   constructor (private readonly prismaService: PrismaService) {}
   async create(createMembershipDto: CreateMembershipDto) {
 
-    if (createMembershipDto.price < 0 || createMembershipDto.pricePlan < 0) {
+    if (createMembershipDto.price < 0) {
       throw new Error('Price must be positive');
-    }
-
-    if (createMembershipDto.name === '' || createMembershipDto.name === null) {
-      throw new Error('Name must not be empty');
     }
 
     if (createMembershipDto.memberId < 0) {
       throw new Error('Member id must be positive');
     }
 
-    if (createMembershipDto.features === null) {
-      throw new Error('Features must not be empty');
+
+    const plan = await this.prismaService.plan.findUnique({
+      where: {
+        id: createMembershipDto.planId
+      }
+    });
+
+    if (!plan) {
+      throw new Error('Plan not found');
     }
 
+    const member = await this.prismaService.member.findUnique({
+      where: {
+        id: createMembershipDto.memberId
+      }
+    });
+
+    if (!member) {
+      throw new Error('Member not found');
+    }
+
+    const membershipRegister = await this.prismaService.membership.create({
+      data: {
+        startDate: createMembershipDto.startDate,
+        endDate: createMembershipDto.endDate,
+        price: createMembershipDto.price,
+        Plan: {
+          connect: {
+            id: createMembershipDto.planId
+          }
+        },
+        member: {
+          connect: {
+            id: createMembershipDto.memberId
+          }
+        },
+      }});
+
+    return membershipRegister;
   }
 
   findAll() {

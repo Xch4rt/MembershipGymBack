@@ -36,34 +36,10 @@ export class CreateMembershipDto {
     price: number;
 
     @ApiProperty({
-        description: 'Name of the membership',
-        type: String,
-    })
-    @IsString()
-    @IsNotEmpty()
-    name: string;
-
-    @ApiProperty({
-        description: 'Description of the membership',
-        type: String,
-    })
-    @IsString()
-    @IsOptional()
-    description: string;
-
-    @ApiProperty({
-        description: 'Features of the membership',
-        type: JSON,
-    })
-    @IsJSON()
-    @IsNotEmpty()
-    features: JSON;
-
-    @ApiProperty({
-        description: 'Price of the membership',
+        description: 'Id of the plan',
         type: Number,
     })
     @IsNumber()
     @IsNotEmpty()
-    pricePlan: number;
+    planId: number;
 }
