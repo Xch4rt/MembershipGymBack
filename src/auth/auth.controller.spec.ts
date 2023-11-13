@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { EmailValidator } from 'src/utils/emailValidator';
+import { EmailValidator } from '../utils/emailValidator';
 
 describe('AuthController', () => {
   let controller: AuthController;
