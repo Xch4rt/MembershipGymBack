@@ -19,6 +19,7 @@ model User {
   isActive Boolean @default(true)
   email String @unique
   password String
+  loginAttempts Int @default(0)
   Invoices Invoice[]
   Attendances Attendance[]
   createdAt DateTime @default(now())

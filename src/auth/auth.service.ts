@@ -21,7 +21,6 @@ export class AuthService {
 
     const isPasswordMatch = await Argon2.verify(user.password, loginAuthDto.password);
 
-    console.log (isPasswordMatch);
 
     if (!isPasswordMatch) {
       throw new HttpException('Wrong Credential', 404);
