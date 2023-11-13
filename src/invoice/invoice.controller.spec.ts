@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { InvoiceController } from './invoice.controller';
 import { InvoiceService } from './invoice.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 describe('InvoiceController', () => {
   let controller: InvoiceController;
@@ -8,7 +9,7 @@ describe('InvoiceController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [InvoiceController],
-      providers: [InvoiceService],
+      providers: [InvoiceService,PrismaService],
     }).compile();
 
     controller = module.get<InvoiceController>(InvoiceController);
