@@ -25,7 +25,6 @@ jobs:
       - name: NPM install, build and test
         run: |
           npm install
-          npm run start:dev
           npm run test
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
