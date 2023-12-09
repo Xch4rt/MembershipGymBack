@@ -20,32 +20,36 @@ export class MembersController {
   constructor(private readonly membersService: MembersService) {}
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN', 'VENDOR')
   create(@Body() createMemberDto: CreateMemberDto) {
     return this.membersService.create(createMemberDto);
   }
 
   @Get()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles('ADMIN')
+  @Roles('ADMIN', 'VENDOR')
   findAll(@Query() paginationDto: PaginationDto) {
     return this.membersService.findAll(paginationDto);
   }
 
   @Get(':id')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN', 'VENDOR')
   findOne(@Param('id') value: string) {
     return this.membersService.findOne(value);
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN', 'VENDOR')
   update(@Param('id') id: string, @Body() updateMemberDto: UpdateMemberDto) {
     return this.membersService.update(+id, updateMemberDto);
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN', 'VENDOR')
   remove(@Param('id') id: string) {
     return this.membersService.remove(+id);
   }
