@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import * as Argon2 from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { EmailValidator } from '../utils/emailValidator';
+
 @Injectable()
 export class AuthService {
   constructor(private readonly prismaService: PrismaService, private jwtService: JwtService, private emailValidator: EmailValidator) {}
@@ -13,6 +14,9 @@ export class AuthService {
       where: {
         userName: loginAuthDto.username,
       },
+      include: {
+        role: true
+      }
     });
 
     if (!user) {
@@ -29,6 +33,7 @@ export class AuthService {
     const payload = {
       sub: user.id,
       username: user.userName,
+      role: user.role
     };
 
     return {
@@ -64,12 +69,21 @@ export class AuthService {
         email: signupDto.email,
         name: signupDto.name,
         lastName: signupDto.name,
+        role: {
+          create: {
+            name: signupDto.role
+          }
+        }
       },
+      include: {
+        role: true
+      }
     });
 
     const payload = {
       sub: newUser.id,
       username: newUser.userName,
+      role: newUser.role.name
     };
 
     return {

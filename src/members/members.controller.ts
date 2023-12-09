@@ -10,6 +10,8 @@ import {
 } from '@nestjs/swagger';
 import { PaginationDto } from './dto/pagination.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
 
 @ApiTags('members')
 @ApiBearerAuth()
@@ -24,7 +26,8 @@ export class MembersController {
   }
 
   @Get()
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN')
   findAll(@Query() paginationDto: PaginationDto) {
     return this.membersService.findAll(paginationDto);
   }
