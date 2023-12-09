@@ -7,7 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class MembershipService {
   constructor (private readonly prismaService: PrismaService) {}
   async create(createMembershipDto: CreateMembershipDto) {
-
+    console.log("entrando al crear membership")
     if (createMembershipDto.price < 0) {
       throw new Error('Price must be positive');
     }
@@ -39,8 +39,8 @@ export class MembershipService {
 
     const membershipRegister = await this.prismaService.membership.create({
       data: {
-        startDate: createMembershipDto.startDate,
-        endDate: createMembershipDto.endDate,
+        startDate: new Date(createMembershipDto.startDate),
+        endDate: new Date(createMembershipDto.endDate),
         price: createMembershipDto.price,
         Plan: {
           connect: {

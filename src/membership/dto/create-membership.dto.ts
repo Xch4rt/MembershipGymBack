@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsJSON, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsDate, IsDateString, IsJSON, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateMembershipDto {
     
@@ -7,7 +7,7 @@ export class CreateMembershipDto {
         description: 'Start date of the membership',
         type: Date,
     })
-    @IsDate()
+    @IsDateString()
     @IsNotEmpty()
     startDate: Date;
 
@@ -15,7 +15,7 @@ export class CreateMembershipDto {
         description: 'End date of the membership',
         type: Date,
     })
-    @IsDate()
+    @IsDateString()
     @IsNotEmpty()
     endDate: Date;
 

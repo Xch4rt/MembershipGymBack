@@ -45,6 +45,13 @@ export class MembersService {
     const total = await this.prisma.member.count();
 
     const data = await this.prisma.member.findMany({
+      include: {
+        Memberships: {
+          include: {
+            Plan: true
+          }
+        }
+      },
       skip,
       take: limit
     });
